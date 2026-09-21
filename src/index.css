@@ -1,0 +1,271 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #FF5722;
+  --color-accent: #FF9800;
+  --color-gold: #FFC107;
+  --color-success: #4CAF50;
+  --color-info: #2196F3;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col transition-colors duration-200;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Custom smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Brand selection highlight */
+  ::selection {
+    background-color: #FF5722;
+    color: #ffffff;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL BLACK / DARK THEME SYSTEM
+   Applies across the entire site when Black/Dark mode is selected
+   ========================================================================== */
+
+.dark {
+  color-scheme: dark;
+}
+
+/* Base Body Background & Text in Black Mode */
+.dark body {
+  background-color: #07090E !important;
+  color: #F1F5F9 !important;
+}
+
+/* Convert all white container surfaces (pages, cards, sections, dropdowns, modals) to deep sleek black */
+.dark .bg-white {
+  background-color: #0C101A !important;
+  color: #F1F5F9;
+}
+
+/* Slate backgrounds to dark tones */
+.dark .bg-slate-50,
+.dark .bg-slate-50\/40,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-50\/60,
+.dark .bg-slate-50\/80 {
+  background-color: #07090E !important;
+  color: #F1F5F9;
+}
+
+.dark .bg-slate-100,
+.dark .bg-slate-100\/50,
+.dark .bg-slate-100\/80 {
+  background-color: #121826 !important;
+  color: #F1F5F9;
+}
+
+.dark .bg-slate-200 {
+  background-color: #1A2234 !important;
+}
+
+/* Headings and High-Contrast Text in Dark Mode */
+.dark .text-slate-950,
+.dark .text-slate-900,
+.dark .text-slate-800 {
+  color: #FFFFFF !important;
+}
+
+.dark .text-slate-700 {
+  color: #E2E8F0 !important;
+}
+
+.dark .text-slate-600 {
+  color: #94A3B8 !important;
+}
+
+.dark .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+.dark .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+/* Borders and Dividers */
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-200\/60,
+.dark .border-slate-200\/70,
+.dark .border-slate-200\/80,
+.dark .border-slate-300 {
+  border-color: #1A2234 !important;
+}
+
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1A2234 !important;
+}
+
+/* Hover States in Dark Mode */
+.dark .hover\:bg-slate-50:hover {
+  background-color: #121826 !important;
+}
+
+.dark .hover\:bg-slate-100:hover {
+  background-color: #1A2234 !important;
+}
+
+.dark .hover\:text-slate-900:hover,
+.dark .hover\:text-slate-950:hover {
+  color: #FFFFFF !important;
+}
+
+/* Form Inputs, Selects & Textareas */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark select,
+.dark textarea {
+  background-color: #101624 !important;
+  color: #FFFFFF !important;
+  border-color: #243048 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+/* Translucent Surfaces */
+.dark .bg-white\/95,
+.dark .bg-white\/90,
+.dark .bg-white\/80 {
+  background-color: rgba(12, 16, 26, 0.95) !important;
+  color: #FFFFFF !important;
+}
+
+/* Glass effect in dark mode */
+.dark .glass-effect {
+  background: rgba(12, 16, 26, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Floating Elevation Shadows in Dark Mode */
+.dark .shadow-xs,
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow-lg,
+.dark .shadow-xl,
+.dark .shadow-2xl {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.65), 0 8px 10px -6px rgba(0, 0, 0, 0.55) !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF5722;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #07090E;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1A2234;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #FF5722;
+}
+
+/* Responsive Container */
+.container-custom {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Flame & Brand Gradient Utilities */
+.bg-gradient-brand {
+  background: linear-gradient(135deg, #FF5722 0%, #FF9800 50%, #FFC107 100%);
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #FF5722 0%, #FF9800 50%, #FFC107 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Seamless Infinite Marquee Keyframes */
+@keyframes marquee-ltr {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-ltr {
+  animation: marquee-ltr 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl {
+  animation: marquee-rtl 34s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-ltr-slow {
+  animation: marquee-ltr 42s linear infinite;
+  will-change: transform;
+}
+
+/* Marquee continues smoothly on hover as requested */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-ltr,
+  .animate-marquee-rtl,
+  .animate-marquee-ltr-slow {
+    animation-duration: 80s;
+  }
+}
