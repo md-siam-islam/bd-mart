@@ -123,46 +123,51 @@ export const Header: React.FC = () => {
   return (
     <header className="w-full bg-white dark:bg-[#0E131F] z-40 relative hidden lg:block transition-colors duration-200">
       {/* Top Announcement Bar */}
-      <div className="bg-slate-900 dark:bg-slate-950 text-slate-300 text-xs py-2 px-4 border-b border-slate-800 dark:border-slate-900">
-        <div className="container-custom flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-              <Truck className="w-3.5 h-3.5" />
-              Free Delivery on Orders Over ৳2,000 | Cash on Delivery Available
+      <div className="bg-slate-900 dark:bg-slate-950 text-slate-300 text-[11px] py-1.5 px-4 border-b border-slate-800 dark:border-slate-900 select-none">
+        <div className="container-custom flex items-center justify-between gap-4">
+          {/* Left: Value Propositions */}
+          <div className="flex items-center gap-3 xl:gap-4 min-w-0 whitespace-nowrap">
+            <span className="flex items-center gap-1.5 text-emerald-400 font-medium whitespace-nowrap">
+              <Truck className="w-3.5 h-3.5 shrink-0" />
+              <span>Free Delivery over ৳2,000 | Cash on Delivery</span>
             </span>
-            <span className="hidden xl:inline text-slate-500">|</span>
-            <span className="hidden xl:flex items-center gap-1.5 text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-              100% Genuine Bangladeshi & International Products
+            <span className="hidden 2xl:inline text-slate-700">|</span>
+            <span className="hidden 2xl:flex items-center gap-1.5 text-slate-400 whitespace-nowrap">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <span>100% Genuine Products</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-5 text-slate-300">
+          {/* Right: Quick Utility Links */}
+          <div className="flex items-center gap-3 lg:gap-4 text-slate-300 shrink-0 whitespace-nowrap">
             <Link
               to="/order-tracking"
-              className={`transition-colors flex items-center gap-1 ${
+              className={`transition-colors flex items-center gap-1 shrink-0 whitespace-nowrap ${
                 isActive('/order-tracking')
                   ? 'text-[#FF5722] font-bold'
                   : 'hover:text-white'
               }`}
             >
-              <MapPin className="w-3.5 h-3.5 text-[#FF5722]" /> Track Order
+              <MapPin className="w-3.5 h-3.5 text-[#FF5722] shrink-0" />
+              <span>Track Order</span>
             </Link>
             <span className="text-slate-700">|</span>
             <a
               href="tel:+8801700000000"
-              className="hover:text-white transition-colors flex items-center gap-1"
+              className="hover:text-white transition-colors flex items-center gap-1 shrink-0 whitespace-nowrap"
             >
-              <PhoneCall className="w-3.5 h-3.5 text-emerald-400" /> Hotline: +880 1700-000000
+              <PhoneCall className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>Hotline: +880 1700-000000</span>
             </a>
             {isAdminAuthenticated && (
               <>
                 <span className="text-slate-700">|</span>
                 <Link
                   to="/admin"
-                  className="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded"
+                  className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 bg-amber-500/10 hover:bg-amber-500/20 px-2 py-0.5 rounded transition-all shrink-0 whitespace-nowrap border border-amber-500/20"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" /> Admin Dashboard
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>Admin Dashboard</span>
                 </Link>
               </>
             )}
