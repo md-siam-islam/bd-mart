@@ -4,6 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCompare } from '../../context/CompareContext';
 import { useAuth } from '../../context/AuthContext';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 import { PRODUCTS } from '../../data/products';
 import { Product } from '../../types';
 import {
@@ -34,6 +35,20 @@ export const Header: React.FC = () => {
   const { wishlistCount } = useWishlist();
   const { comparedProducts } = useCompare();
   const { user, isAuthenticated, logout } = useAuth();
+  const { admin, isAdminAuthenticated, adminLogout } = useAdminAuth();
+
+  const isUserAuthenticated = isAuthenticated || isAdminAuthenticated;
+  const activeUser = user || (admin ? {
+    id: admin.id,
+    name: admin.name,
+    email: admin.email,
+    phone: '',
+    avatar: admin.avatar,
+    role: admin.role,
+    status: 'active' as const,
+    addresses: [],
+    createdAt: admin.createdAt
+  } : null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -140,10 +155,17 @@ export const Header: React.FC = () => {
             >
               <PhoneCall className="w-3.5 h-3.5 text-emerald-400" /> Hotline: +880 1700-000000
             </a>
-            <span className="text-slate-700">|</span>
-            <Link to="/admin" className="text-amber-400 hover:text-amber-300 font-semibold">
-              Admin Portal
-            </Link>
+            {isAdminAuthenticated && (
+              <>
+                <span className="text-slate-700">|</span>
+                <Link
+                  to="/admin"
+                  className="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" /> Admin Dashboard
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -271,21 +293,23 @@ export const Header: React.FC = () => {
             </Link>
 
             {/* User Account / Auth Buttons */}
-            {isAuthenticated && user ? (
+            {isUserAuthenticated && activeUser ? (
               <div ref={accountRef} className="relative">
                 <button
                   onClick={() => setIsAccountOpen(!isAccountOpen)}
                   className="flex items-center gap-2 p-1.5 pr-2.5 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-colors border border-slate-200/80 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 cursor-pointer"
                 >
                   <img
-                    src={user.avatar}
-                    alt={user.name}
+                    src={activeUser.avatar}
+                    alt={activeUser.name}
                     className="w-8 h-8 rounded-xl object-cover border border-primary/30"
                   />
                   <div className="text-left text-xs">
-                    <span className="text-slate-400 block text-[10px] leading-tight">Hello,</span>
+                    <span className="text-slate-400 block text-[10px] leading-tight">
+                      {isAdminAuthenticated ? 'Admin,' : 'Hello,'}
+                    </span>
                     <span className="font-bold text-slate-800 dark:text-slate-100 line-clamp-1 max-w-[90px] leading-tight">
-                      {user.name.split(' ')[0]}
+                      {activeUser.name.split(' ')[0]}
                     </span>
                   </div>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -294,9 +318,27 @@ export const Header: React.FC = () => {
                 {isAccountOpen && (
                   <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 py-2 z-50 animate-fadeIn">
                     <div className="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800">
-                      <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{user.name}</p>
-                      <p className="text-[11px] text-slate-500 truncate">{user.phone ? `+880 ${user.phone}` : user.email}</p>
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{activeUser.name}</p>
+                        {isAdminAuthenticated && (
+                          <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded">
+                            Admin
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-500 truncate">{activeUser.email || (activeUser.phone ? `+880 ${activeUser.phone}` : '')}</p>
                     </div>
+
+                    {isAdminAuthenticated && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsAccountOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors border-b border-slate-100 dark:border-slate-800"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-amber-500" /> Open Admin Dashboard
+                      </Link>
+                    )}
+
                     <Link
                       to="/account"
                       onClick={() => setIsAccountOpen(false)}
@@ -329,6 +371,7 @@ export const Header: React.FC = () => {
                     <button
                       onClick={() => {
                         logout();
+                        adminLogout();
                         setIsAccountOpen(false);
                       }}
                       className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors text-left cursor-pointer"

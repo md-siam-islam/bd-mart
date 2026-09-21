@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useAuth } from '../../context/AuthContext';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 import { CATEGORIES } from '../../data/categories';
 import {
   Menu,
@@ -26,6 +27,20 @@ export const MobileHeader: React.FC = () => {
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
   const { user, isAuthenticated } = useAuth();
+  const { admin, isAdminAuthenticated } = useAdminAuth();
+
+  const isUserAuthenticated = isAuthenticated || isAdminAuthenticated;
+  const activeUser = user || (admin ? {
+    id: admin.id,
+    name: admin.name,
+    email: admin.email,
+    phone: '',
+    avatar: admin.avatar,
+    role: admin.role,
+    status: 'active' as const,
+    addresses: [],
+    createdAt: admin.createdAt
+  } : null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -74,14 +89,14 @@ export const MobileHeader: React.FC = () => {
           <ThemeToggle />
 
           <Link
-            to={isAuthenticated ? '/account' : '/account/login'}
+            to={isAdminAuthenticated ? '/admin' : (isAuthenticated ? '/account' : '/account/login')}
             className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"
-            title={isAuthenticated ? 'My Account' : 'Sign In'}
+            title={isAdminAuthenticated ? 'Admin Dashboard' : (isAuthenticated ? 'My Account' : 'Sign In')}
           >
-            {isAuthenticated && user ? (
+            {isUserAuthenticated && activeUser ? (
               <img
-                src={user.avatar}
-                alt={user.name}
+                src={activeUser.avatar}
+                alt={activeUser.name}
                 className="w-6 h-6 rounded-full object-cover border border-primary"
               />
             ) : (
@@ -168,23 +183,40 @@ export const MobileHeader: React.FC = () => {
               {/* Drawer Links */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {/* Account Section */}
-                {isAuthenticated && user ? (
+                {isUserAuthenticated && activeUser ? (
                   <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <img
-                        src={user.avatar}
-                        alt={user.name}
+                        src={activeUser.avatar}
+                        alt={activeUser.name}
                         className="w-10 h-10 rounded-xl object-cover border border-primary/20"
                       />
                       <div>
-                        <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{user.name}</p>
-                        <Link
-                          to="/account"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="text-[11px] text-primary font-bold hover:underline"
-                        >
-                          Customer Dashboard →
-                        </Link>
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{activeUser.name}</p>
+                          {isAdminAuthenticated && (
+                            <span className="px-1.5 py-0.5 text-[8px] font-black uppercase bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded">
+                              Admin
+                            </span>
+                          )}
+                        </div>
+                        {isAdminAuthenticated ? (
+                          <Link
+                            to="/admin"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="text-[11px] text-amber-600 dark:text-amber-400 font-bold hover:underline"
+                          >
+                            Admin Dashboard →
+                          </Link>
+                        ) : (
+                          <Link
+                            to="/account"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="text-[11px] text-primary font-bold hover:underline"
+                          >
+                            Customer Dashboard →
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -385,7 +417,7 @@ export const MobileHeader: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Helpline & Admin */}
+                {/* Helpline & Admin (only visible to authenticated admin) */}
                 <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs">
                   <a
                     href="tel:+8801700000000"
@@ -393,13 +425,15 @@ export const MobileHeader: React.FC = () => {
                   >
                     <PhoneCall className="w-3.5 h-3.5 text-emerald-500" /> +880 1700-000000
                   </a>
-                  <Link
-                    to="/admin"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block text-amber-600 dark:text-amber-400 font-bold hover:underline"
-                  >
-                    🔒 Open Admin Dashboard
-                  </Link>
+                  {isAdminAuthenticated && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block text-amber-600 dark:text-amber-400 font-bold hover:underline"
+                    >
+                      🔒 Open Admin Dashboard
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>

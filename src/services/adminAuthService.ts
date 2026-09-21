@@ -2,14 +2,15 @@
 // Completely separated from customer authentication
 import { AdminUser, StoredAdminAccount } from '../types';
 import { hashPassword, verifyPassword, generateSalt, generateOtpCode } from '../utils/security';
+import { UserStorageService } from './userStorage';
 
 const ADMINS_STORAGE_KEY = 'bdmart_admins_db';
 const ADMIN_SESSION_KEY = 'bdmart_admin_session';
 const ADMIN_RESET_OTP_KEY = 'bdmart_admin_reset_otps';
 
 // Fallback initial values if not set in environment variables
-const ENV_ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'admin@bdmart.com.bd';
-const ENV_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Admin@BDMart2026!';
+const ENV_ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'mdsiamislam663@gmail.com';
+const ENV_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Siamali123@#';
 
 export class AdminAuthService {
   private static initialized = false;
@@ -22,27 +23,73 @@ export class AdminAuthService {
 
     try {
       const existing = localStorage.getItem(ADMINS_STORAGE_KEY);
-      if (!existing) {
-        // Initial Super Admin from environment configuration
-        const salt = generateSalt(16);
-        const passwordHash = await hashPassword(ENV_ADMIN_PASSWORD, salt);
+      let accounts: StoredAdminAccount[] = existing ? JSON.parse(existing) : [];
 
-        const initialAdmin: StoredAdminAccount = {
+      const primaryEmail = (ENV_ADMIN_EMAIL || 'mdsiamislam663@gmail.com').trim().toLowerCase();
+      const primaryPassword = ENV_ADMIN_PASSWORD || 'Siamali123@#';
+
+      // 1. Ensure primary Super Admin account (mdsiamislam663@gmail.com)
+      const primaryAccount = accounts.find((a) => a.email.toLowerCase() === primaryEmail);
+      if (!primaryAccount) {
+        const salt = generateSalt(16);
+        const passwordHash = await hashPassword(primaryPassword, salt);
+        const newSuperAdmin: StoredAdminAccount = {
           id: 'adm-001',
-          name: 'Chief Operations Administrator',
-          email: ENV_ADMIN_EMAIL.trim().toLowerCase(),
+          name: 'Siam Ali',
+          email: primaryEmail,
           role: 'Super Admin',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&q=80',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Siam%20Ali',
           createdAt: '2026-01-01',
           lastLogin: new Date().toISOString(),
           passwordHash,
           salt
         };
+        accounts.unshift(newSuperAdmin);
+      } else {
+        // Ensure name and password match latest configuration
+        primaryAccount.name = 'Siam Ali';
+        primaryAccount.role = 'Super Admin';
+        const isMatch = await verifyPassword(primaryPassword, primaryAccount.salt, primaryAccount.passwordHash);
+        if (!isMatch) {
+          const salt = generateSalt(16);
+          primaryAccount.salt = salt;
+          primaryAccount.passwordHash = await hashPassword(primaryPassword, salt);
+        }
+      }
 
-        // Secondary logistics admin for realistic operations
+      // 2. Also register alias with 4 sixes (mdsiamislam6663@gmail.com) to prevent user typo issues
+      const aliasEmail = 'mdsiamislam6663@gmail.com';
+      const aliasAccount = accounts.find((a) => a.email.toLowerCase() === aliasEmail);
+      if (!aliasAccount) {
+        const salt = generateSalt(16);
+        const passwordHash = await hashPassword(primaryPassword, salt);
+        accounts.push({
+          id: 'adm-alias',
+          name: 'Siam Ali',
+          email: aliasEmail,
+          role: 'Super Admin',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Siam%20Ali',
+          createdAt: '2026-01-01',
+          lastLogin: new Date().toISOString(),
+          passwordHash,
+          salt
+        });
+      } else {
+        aliasAccount.name = 'Siam Ali';
+        aliasAccount.role = 'Super Admin';
+        const isMatch = await verifyPassword(primaryPassword, aliasAccount.salt, aliasAccount.passwordHash);
+        if (!isMatch) {
+          const salt = generateSalt(16);
+          aliasAccount.salt = salt;
+          aliasAccount.passwordHash = await hashPassword(primaryPassword, salt);
+        }
+      }
+
+      // 3. Keep secondary operations admin if none exists
+      if (!accounts.some((a) => a.email.toLowerCase() === 'logistics@bdmart.com.bd')) {
         const opsSalt = generateSalt(16);
         const opsHash = await hashPassword('Logistics@2026', opsSalt);
-        const opsAdmin: StoredAdminAccount = {
+        accounts.push({
           id: 'adm-002',
           name: 'Steadfast Hub Coordinator',
           email: 'logistics@bdmart.com.bd',
@@ -51,10 +98,10 @@ export class AdminAuthService {
           createdAt: '2026-01-15',
           passwordHash: opsHash,
           salt: opsSalt
-        };
-
-        localStorage.setItem(ADMINS_STORAGE_KEY, JSON.stringify([initialAdmin, opsAdmin]));
+        });
       }
+
+      localStorage.setItem(ADMINS_STORAGE_KEY, JSON.stringify(accounts));
       this.initialized = true;
     } catch (e) {
       console.error('Failed to initialize admin database:', e);
@@ -96,9 +143,39 @@ export class AdminAuthService {
   ): Promise<{ success: boolean; admin?: AdminUser; error?: string }> {
     await this.init();
 
-    const accounts = this.getStoredAccounts();
     const cleanEmail = email.trim().toLowerCase();
+    const accounts = this.getStoredAccounts();
     const account = accounts.find((a) => a.email.toLowerCase() === cleanEmail);
+
+    // Direct check for Siam Ali admin credentials
+    const isSiamEmail = cleanEmail === 'mdsiamislam663@gmail.com' || cleanEmail === 'mdsiamislam6663@gmail.com';
+    if (isSiamEmail && passwordPlain === 'Siamali123@#') {
+      const activeAdmin = account || {
+        id: 'adm-001',
+        name: 'Siam Ali',
+        email: cleanEmail,
+        role: 'Super Admin' as const,
+        avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Siam%20Ali',
+        createdAt: new Date().toISOString().split('T')[0],
+        lastLogin: new Date().toISOString()
+      };
+      if (account) {
+        account.lastLogin = new Date().toISOString();
+        this.saveStoredAccounts(accounts);
+      }
+      return {
+        success: true,
+        admin: {
+          id: activeAdmin.id,
+          name: 'Siam Ali',
+          email: cleanEmail,
+          role: 'Super Admin',
+          avatar: activeAdmin.avatar,
+          createdAt: activeAdmin.createdAt,
+          lastLogin: new Date().toISOString()
+        }
+      };
+    }
 
     if (!account) {
       return {
@@ -138,6 +215,24 @@ export class AdminAuthService {
       sessionStorage.setItem(ADMIN_SESSION_KEY, sessionData);
       localStorage.removeItem(ADMIN_SESSION_KEY);
     }
+
+    // Automatically sync customer profile session so storefront recognizes Siam Ali as logged in
+    try {
+      UserStorageService.saveSession({
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+        phone: '01700000000',
+        avatar: admin.avatar,
+        status: 'active',
+        createdAt: admin.createdAt,
+        addresses: [],
+        ordersCount: 0,
+        totalSpent: 0
+      }, rememberMe);
+    } catch {
+      // ignore
+    }
   }
 
   public static getSession(): AdminUser | null {
@@ -155,6 +250,11 @@ export class AdminAuthService {
   public static clearSession(): void {
     localStorage.removeItem(ADMIN_SESSION_KEY);
     sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    try {
+      UserStorageService.clearSession();
+    } catch {
+      // ignore
+    }
   }
 
   /**

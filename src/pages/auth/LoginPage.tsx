@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 import { useToast } from '../../context/ToastContext';
 import { Logo } from '../../components/common/Logo';
 import {
@@ -17,6 +18,7 @@ import {
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth();
+  const { adminLogin } = useAdminAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,6 +52,31 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      const cleanId = identifier.trim().toLowerCase();
+      const isAdminAccount =
+        cleanId === 'mdsiamislam663@gmail.com' ||
+        cleanId === 'mdsiamislam6663@gmail.com' ||
+        cleanId === 'admin@bdmart.com.bd' ||
+        cleanId.includes('admin');
+
+      // 1. Check if logging in with Administrator credentials
+      const adminRes = await adminLogin(cleanId, password, rememberMe);
+      if (adminRes.success) {
+        // Also sync customer profile session
+        await login(cleanId, password, rememberMe);
+        showToast('Welcome Siam Ali! Redirecting to Admin Dashboard...', 'success');
+        navigate('/admin', { replace: true });
+        return;
+      }
+
+      // If typed an administrator email but got incorrect password, display specific warning
+      if (isAdminAccount) {
+        setErrorMessage(adminRes.error || 'Invalid administrator credentials. Access denied.');
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. Standard customer authentication
       const res = await login(identifier, password, rememberMe);
       if (res.success) {
         navigate(redirectTarget);

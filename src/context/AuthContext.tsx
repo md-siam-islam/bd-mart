@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { UserProfile, Address, Order, CartItem, PaymentMethodType, OrderStatusType } from '../types';
 import { useToast } from './ToastContext';
 import { UserStorageService } from '../services/userStorage';
+import { AdminAuthService } from '../services/adminAuthService';
 
 interface RegisterParams {
   name: string;
@@ -215,7 +216,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       localStorage.removeItem('bdmart_user');
       const session = UserStorageService.getSession();
-      return session;
+      if (session) return session;
+      const adminSession = AdminAuthService.getSession();
+      if (adminSession) {
+        return {
+          id: adminSession.id,
+          name: adminSession.name,
+          email: adminSession.email,
+          phone: '01700000000',
+          avatar: adminSession.avatar,
+          status: 'active',
+          createdAt: adminSession.createdAt,
+          addresses: [],
+          ordersCount: 0,
+          totalSpent: 0
+        };
+      }
+      return null;
     } catch {
       return null;
     }
@@ -291,6 +308,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
    */
   const logout = () => {
     UserStorageService.clearSession();
+    AdminAuthService.clearSession();
     setUser(null);
     showToast('Logged out successfully', 'info');
   };

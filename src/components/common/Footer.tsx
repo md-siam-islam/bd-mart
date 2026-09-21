@@ -180,11 +180,6 @@ export const Footer: React.FC = () => {
                     Terms & Conditions
                   </Link>
                 </li>
-                <li>
-                  <Link to="/admin" className="text-amber-400 hover:text-amber-300 font-semibold">
-                    Admin Access Portal
-                  </Link>
-                </li>
               </ul>
             </div>
 

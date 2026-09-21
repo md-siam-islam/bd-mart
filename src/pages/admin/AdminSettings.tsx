@@ -131,8 +131,8 @@ export const AdminSettings: React.FC = () => {
 
   const copyEnvSnippet = () => {
     const snippet = `# BD Mart Administrator Configuration
-VITE_ADMIN_EMAIL=admin@bdmart.com.bd
-VITE_ADMIN_PASSWORD=Admin@BDMart2026!
+VITE_ADMIN_EMAIL=mdsiamislam663@gmail.com
+VITE_ADMIN_PASSWORD=Siamali123@#
 VITE_STORE_NAME=BD Mart Bangladesh
 VITE_STORE_HOTLINE=+880 1700-000000`;
     navigator.clipboard.writeText(snippet);
@@ -474,8 +474,8 @@ VITE_STORE_HOTLINE=+880 1700-000000`;
               <div className="relative mt-2">
                 <pre className="bg-slate-950 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed">
 {`# Initial Super Administrator Credentials
-VITE_ADMIN_EMAIL=admin@bdmart.com.bd
-VITE_ADMIN_PASSWORD=Admin@BDMart2026!
+VITE_ADMIN_EMAIL=mdsiamislam663@gmail.com
+VITE_ADMIN_PASSWORD=Siamali123@#
 
 # Store Information
 VITE_STORE_NAME=BD Mart Bangladesh

@@ -81,10 +81,10 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   const fillDemoAdmin = () => {
-    setEmail('admin@bdmart.com.bd');
-    setPassword('Admin@BDMart2026!');
+    setEmail('mdsiamislam663@gmail.com');
+    setPassword('Siamali123@#');
     setErrorMessage('');
-    showToast('Loaded Super Admin credentials', 'info');
+    showToast('Loaded Siam Ali (Super Admin) credentials', 'info');
   };
 
   const handleRequestAdminRecovery = (e: React.FormEvent) => {
@@ -176,7 +176,7 @@ export const AdminLoginPage: React.FC = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@bdmart.com.bd"
+                    placeholder="mdsiamislam663@gmail.com"
                     className="w-full bg-slate-950 text-xs sm:text-sm text-white px-4 py-3 rounded-xl border border-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary font-medium transition-all"
                   />
                   <Mail className="w-4 h-4 text-slate-500 absolute right-3.5 top-3.5 pointer-events-none" />
@@ -263,7 +263,7 @@ export const AdminLoginPage: React.FC = () => {
                 onClick={fillDemoAdmin}
                 className="w-full py-2 px-3 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-amber-300 rounded-xl text-xs font-mono font-bold transition-colors flex items-center justify-center gap-2"
               >
-                <span>admin@bdmart.com.bd</span>
+                <span>mdsiamislam663@gmail.com</span>
                 <span className="text-slate-500">•</span>
                 <span>Click to Autofill</span>
               </button>
@@ -298,7 +298,7 @@ export const AdminLoginPage: React.FC = () => {
                     required
                     value={forgotEmail}
                     onChange={(e) => setForgotEmail(e.target.value)}
-                    placeholder="admin@bdmart.com.bd"
+                    placeholder="mdsiamislam663@gmail.com"
                     className="w-full bg-slate-950 px-3.5 py-2.5 rounded-xl border border-slate-800 text-white outline-none focus:border-primary"
                   />
                 </div>
