@@ -25,6 +25,7 @@ import {
   ExternalLink,
   Store
 } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 interface RevenueDataPoint {
   date: string;
@@ -512,8 +513,9 @@ export const AdminAnalyticsPage: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <span className="w-5 font-black text-slate-400">#{idx + 1}</span>
                       <img
-                        src={item.product.images[0]}
+                        src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                         alt={item.product.name}
+                        onError={handleProductImageError}
                         className="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0"
                       />
                       <div>

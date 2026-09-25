@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CATEGORIES } from '../../data/categories';
 import { ArrowRight } from 'lucide-react';
+import { handleProductImageError } from '../../utils/imageFallback';
 
 export const CategorySlider: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ export const CategorySlider: React.FC = () => {
                 <img
                   src={cat.image}
                   alt={cat.name}
+                  onError={handleProductImageError}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>

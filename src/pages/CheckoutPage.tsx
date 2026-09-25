@@ -26,6 +26,7 @@ import {
   Home
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../utils/imageFallback';
 
 export const CheckoutPage: React.FC = () => {
   const {
@@ -731,8 +732,9 @@ export const CheckoutPage: React.FC = () => {
                   <div key={item.id} className="flex items-center justify-between gap-3 text-xs">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <img
-                        src={item.product.images[0]}
+                        src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                         alt={item.product.name}
+                        onError={handleProductImageError}
                         className="w-12 h-12 rounded-xl object-cover bg-slate-50 border border-slate-100 shrink-0"
                       />
                       <div className="truncate">

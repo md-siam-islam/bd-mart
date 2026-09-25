@@ -23,6 +23,7 @@ import {
   LayoutDashboard,
   Store
 } from 'lucide-react';
+import { handleAvatarError } from '../../utils/imageFallback';
 import { AdminAnalyticsPage } from './AdminAnalyticsPage';
 
 export const AdminDashboard: React.FC = () => {
@@ -269,6 +270,7 @@ export const AdminDashboard: React.FC = () => {
                   <img
                     src={cust.avatar}
                     alt={cust.name}
+                    onError={handleAvatarError}
                     className="w-9 h-9 rounded-xl object-cover border border-slate-200 bg-slate-100 shrink-0"
                   />
                   <div>

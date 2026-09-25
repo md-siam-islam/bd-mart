@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Breadcrumb } from '../../components/common/Breadcrumb';
 import { Price } from '../../components/common/Price';
 import { Package, Truck, ArrowRight, Clock } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 export const MyOrdersPage: React.FC = () => {
   const { orders } = useAuth();
@@ -74,8 +75,9 @@ export const MyOrdersPage: React.FC = () => {
                 {ord.items.map((it) => (
                   <div key={it.id} className="flex items-center gap-3 text-xs">
                     <img
-                      src={it.product.images[0]}
+                      src={it.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                       alt={it.product.name}
+                      onError={handleProductImageError}
                       className="w-14 h-14 rounded-xl object-cover bg-slate-50 border border-slate-100 shrink-0"
                     />
                     <div className="flex-1 min-w-0">

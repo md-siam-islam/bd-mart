@@ -16,6 +16,7 @@ import {
   Layers,
   Sparkles
 } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 export const ProductsManage: React.FC = () => {
   const { showToast } = useToast();
@@ -219,8 +220,9 @@ export const ProductsManage: React.FC = () => {
                 <td className="py-3.5">
                   <div className="flex items-center gap-3">
                     <img
-                      src={prod.images[0]}
+                      src={prod.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                       alt={prod.name}
+                      onError={handleProductImageError}
                       className="w-11 h-11 rounded-xl object-cover border border-slate-200 bg-slate-100 shrink-0"
                     />
                     <div>
@@ -397,6 +399,7 @@ export const ProductsManage: React.FC = () => {
                     <img
                       src={formData.image}
                       alt="Preview"
+                      onError={handleProductImageError}
                       className="w-12 h-12 rounded-xl object-cover border border-slate-200 bg-slate-100"
                     />
                     <span className="text-[11px] text-slate-400">Live image preview</span>

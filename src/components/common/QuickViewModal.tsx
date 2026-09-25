@@ -7,6 +7,7 @@ import { X, Heart, ShoppingBag, Check, ShieldCheck, Truck } from 'lucide-react';
 import { Price } from './Price';
 import { Rating } from './Rating';
 import { motion, AnimatePresence } from 'framer-motion';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 interface QuickViewModalProps {
   product: Product | null;
@@ -68,8 +69,9 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
             <div className="flex flex-col gap-3">
               <div className="aspect-square rounded-xl overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center">
                 <img
-                  src={product.images[selectedImage] || product.images[0]}
+                  src={product.images?.[selectedImage] || product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                   alt={product.name}
+                  onError={handleProductImageError}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -85,7 +87,12 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                         selectedImage === idx ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={img || DEFAULT_PRODUCT_IMAGE}
+                        alt=""
+                        onError={handleProductImageError}
+                        className="w-full h-full object-cover"
+                      />
                     </button>
                   ))}
                 </div>

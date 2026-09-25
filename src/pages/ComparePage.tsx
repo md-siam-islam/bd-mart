@@ -6,6 +6,7 @@ import { Breadcrumb } from '../components/common/Breadcrumb';
 import { Price } from '../components/common/Price';
 import { Rating } from '../components/common/Rating';
 import { Layers, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../utils/imageFallback';
 
 export const ComparePage: React.FC = () => {
   const { comparedProducts, removeFromCompare, clearCompare } = useCompare();
@@ -73,8 +74,9 @@ export const ComparePage: React.FC = () => {
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                         <img
-                          src={p.images[0]}
+                          src={p.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                           alt={p.name}
+                          onError={handleProductImageError}
                           className="w-32 h-32 rounded-2xl object-cover bg-slate-50 border border-slate-100 mx-auto mb-3"
                         />
                         <Link

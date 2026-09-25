@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 interface ProductGalleryProps {
   images: string[];
@@ -10,7 +11,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, productN
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const activeImage = images[activeIndex] || images[0];
+  const activeImage = images?.[activeIndex] || images?.[0] || DEFAULT_PRODUCT_IMAGE;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -33,7 +34,12 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, productN
                 : 'border-slate-200 opacity-60 hover:opacity-100'
             }`}
           >
-            <img src={img} alt="" className="w-full h-full object-cover" />
+            <img
+              src={img || DEFAULT_PRODUCT_IMAGE}
+              alt=""
+              onError={handleProductImageError}
+              className="w-full h-full object-cover"
+            />
           </button>
         ))}
       </div>
@@ -48,6 +54,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, productN
         <img
           src={activeImage}
           alt={productName}
+          onError={handleProductImageError}
           className={`w-full h-full object-cover transition-transform duration-200 ${
             isZoomed ? 'scale-150' : 'scale-100'
           }`}

@@ -4,6 +4,7 @@ import { Price } from '../../components/common/Price';
 import { useToast } from '../../context/ToastContext';
 import { Search, Truck, Filter, MapPin, Eye, CheckCircle2, XCircle, Clock, X, PhoneCall, Mail } from 'lucide-react';
 import { OrderStatusType, Order } from '../../types';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 export const OrdersManage: React.FC = () => {
   const { orders, updateOrderStatus } = useAuth();
@@ -251,8 +252,9 @@ export const OrdersManage: React.FC = () => {
                     <div key={idx} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
                       <div className="flex items-center gap-3">
                         <img
-                          src={item.product.images[0]}
+                          src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                           alt={item.product.name}
+                          onError={handleProductImageError}
                           className="w-10 h-10 rounded-lg object-cover border border-slate-200"
                         />
                         <div>

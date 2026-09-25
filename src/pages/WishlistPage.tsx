@@ -6,6 +6,7 @@ import { Breadcrumb } from '../components/common/Breadcrumb';
 import { Price } from '../components/common/Price';
 import { Rating } from '../components/common/Rating';
 import { Heart, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../utils/imageFallback';
 
 export const WishlistPage: React.FC = () => {
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
@@ -79,8 +80,9 @@ export const WishlistPage: React.FC = () => {
                     className="w-full aspect-square rounded-xl overflow-hidden bg-slate-50 relative mb-3 block"
                   >
                     <img
-                      src={product.images[0]}
+                      src={product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                       alt={product.name}
+                      onError={handleProductImageError}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </Link>

@@ -4,6 +4,7 @@ import { CATEGORIES } from '../data/categories';
 import { PRODUCTS } from '../data/products';
 import { ProductGrid } from '../components/product/ProductGrid';
 import { Breadcrumb } from '../components/common/Breadcrumb';
+import { handleProductImageError } from '../utils/imageFallback';
 
 export const CategoryPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -54,7 +55,7 @@ export const CategoryPage: React.FC = () => {
           </div>
 
           <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none hidden md:block">
-            <img src={category.image} alt="" className="w-full h-full object-cover" />
+            <img src={category.image} alt="" onError={handleProductImageError} className="w-full h-full object-cover" />
           </div>
         </div>
 

@@ -240,7 +240,7 @@ export const PRODUCTS: Product[] = [
     stock: 45,
     images: [
       'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80',
-      'https://images.unsplash.com/photo-1609592424368-243e86c05a10?w=800&q=80'
+      'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&q=80'
     ],
     colors: [
       { name: 'Classic Black', hex: '#1E293B' },
@@ -391,7 +391,7 @@ export const PRODUCTS: Product[] = [
     stock: 32,
     images: [
       'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80',
-      'https://images.unsplash.com/photo-1542272604-780c96856592?w=800&q=80'
+      'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=800&q=80'
     ],
     colors: [
       { name: 'Deep Indigo', hex: '#1E1B4B' },
@@ -685,7 +685,7 @@ export const PRODUCTS: Product[] = [
     reviews: 167,
     stock: 80,
     images: [
-      'https://images.unsplash.com/photo-1608248597359-59749fb8c5b0?w=800&q=80',
+      'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=800&q=80',
       'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80'
     ],
     description: 'Extracted from fresh coastal coconuts using wood-pressed ghani technique without heat or chemicals. Excellent natural moisturizer for glowing skin and thick hair.',
@@ -812,7 +812,8 @@ export const PRODUCTS: Product[] = [
     reviews: 79,
     stock: 18,
     images: [
-      'https://images.unsplash.com/photo-1584990347449-39908cf8b51d?w=800&q=80'
+      'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=800&q=80',
+      'https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=800&q=80'
     ],
     description: 'Heavy gauge 304 food-grade stainless steel with induction-compatible sandwich alpha base. Equipped with controlled gasket release system and metallic safety plug.',
     specifications: {

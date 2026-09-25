@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../types';
 import { useCart } from '../../context/CartContext';
@@ -8,6 +8,7 @@ import { Heart, Eye, ShoppingBag, Layers, Check, Star, ShieldCheck } from 'lucid
 import { Price } from '../common/Price';
 import { Rating } from '../common/Rating';
 import { QuickViewModal } from '../common/QuickViewModal';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 interface ProductCardProps {
   product: Product;
@@ -52,8 +53,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, viewMode = 'g
     addToCompare(product);
   };
 
-  const primaryImage = product.images[0];
-  const secondaryImage = product.images[1] || primaryImage;
+  const primaryImage = product.images?.[0] || DEFAULT_PRODUCT_IMAGE;
+  const secondaryImage = product.images?.[1] || primaryImage;
+
+  const [imgSrc, setImgSrc] = useState<string>(primaryImage);
+
+  useEffect(() => {
+    setImgSrc(isHovered && secondaryImage ? secondaryImage : primaryImage);
+  }, [isHovered, primaryImage, secondaryImage]);
+
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (imgSrc === secondaryImage && secondaryImage !== primaryImage) {
+      setImgSrc(primaryImage);
+    } else {
+      handleProductImageError(e, DEFAULT_PRODUCT_IMAGE);
+    }
+  };
 
   // Track product in recently viewed
   const trackRecentlyViewed = () => {
@@ -140,8 +155,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, viewMode = 'g
             className="w-full sm:w-56 aspect-square rounded-2xl overflow-hidden bg-slate-50 relative shrink-0 block"
           >
             <img
-              src={isHovered ? secondaryImage : primaryImage}
+              src={imgSrc}
               alt={product.name}
+              onError={handleImgError}
               className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
               loading="lazy"
             />
@@ -293,8 +309,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, viewMode = 'g
           className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-50 relative mb-3 block"
         >
           <img
-            src={isHovered ? secondaryImage : primaryImage}
+            src={imgSrc}
             alt={product.name}
+            onError={handleImgError}
             className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-106"
             loading="lazy"
           />

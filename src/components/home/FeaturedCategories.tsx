@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { handleProductImageError } from '../../utils/imageFallback';
 
 interface FeaturedCategory {
   id: string;
@@ -111,6 +112,7 @@ export const FeaturedCategories: React.FC = () => {
                   src={category.image}
                   alt={category.name}
                   loading="lazy"
+                  onError={handleProductImageError}
                   className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-108 transition-transform duration-700 ease-out will-change-transform"
                 />
                 {/* Cinematic Vignette & Gradient Mask */}

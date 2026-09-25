@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from './Logo';
 import { ThemeToggle } from './ThemeToggle';
+import { handleAvatarError } from '../../utils/imageFallback';
 
 export const MobileHeader: React.FC = () => {
   const { itemCount, setIsCartOpen } = useCart();
@@ -97,6 +98,7 @@ export const MobileHeader: React.FC = () => {
               <img
                 src={activeUser.avatar}
                 alt={activeUser.name}
+                onError={handleAvatarError}
                 className="w-6 h-6 rounded-full object-cover border border-primary"
               />
             ) : (
@@ -189,6 +191,7 @@ export const MobileHeader: React.FC = () => {
                       <img
                         src={activeUser.avatar}
                         alt={activeUser.name}
+                        onError={handleAvatarError}
                         className="w-10 h-10 rounded-xl object-cover border border-primary/20"
                       />
                       <div>

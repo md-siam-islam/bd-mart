@@ -15,6 +15,7 @@ import {
   Sparkles,
   Check
 } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../../utils/imageFallback';
 
 interface MarqueeCardProps {
   product: Product;
@@ -67,9 +68,10 @@ const MarqueeCard: React.FC<MarqueeCardProps> = ({ product, onQuickView }) => {
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-slate-900/60">
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <img
-            src={product.images[0]}
+            src={product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
             alt={product.name}
             loading="lazy"
+            onError={handleProductImageError}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           />
         </Link>

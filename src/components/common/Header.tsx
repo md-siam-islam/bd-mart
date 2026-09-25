@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { PRODUCTS } from '../../data/products';
 import { Product } from '../../types';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError, handleAvatarError } from '../../utils/imageFallback';
 import {
   Search,
   ShoppingBag,
@@ -233,8 +234,9 @@ export const Header: React.FC = () => {
                     className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
                   >
                     <img
-                      src={product.images[0]}
+                      src={product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                       alt={product.name}
+                      onError={handleProductImageError}
                       className="w-12 h-12 rounded-lg object-cover bg-slate-100 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shrink-0"
                     />
                     <div className="flex-1 min-w-0">
@@ -307,6 +309,7 @@ export const Header: React.FC = () => {
                   <img
                     src={activeUser.avatar}
                     alt={activeUser.name}
+                    onError={handleAvatarError}
                     className="w-8 h-8 rounded-xl object-cover border border-primary/30"
                   />
                   <div className="text-left text-xs">

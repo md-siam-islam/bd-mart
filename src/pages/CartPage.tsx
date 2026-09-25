@@ -17,6 +17,7 @@ import {
   XCircle,
   ShieldCheck
 } from 'lucide-react';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError } from '../utils/imageFallback';
 
 export const CartPage: React.FC = () => {
   const {
@@ -125,8 +126,9 @@ export const CartPage: React.FC = () => {
                 {/* Product Thumbnail & Details */}
                 <div className="flex gap-4 items-center">
                   <img
-                    src={item.product.images[0]}
+                    src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                     alt={item.product.name}
+                    onError={handleProductImageError}
                     className="w-20 h-20 rounded-2xl object-cover bg-slate-50 border border-slate-100 shrink-0"
                   />
                   <div>

@@ -7,6 +7,7 @@ import { Breadcrumb } from '../../components/common/Breadcrumb';
 import { Price } from '../../components/common/Price';
 import { validateBDMobile, checkPasswordRequirements } from '../../utils/security';
 import { Order } from '../../types';
+import { DEFAULT_PRODUCT_IMAGE, handleProductImageError, handleAvatarError } from '../../utils/imageFallback';
 import {
   Package,
   Clock,
@@ -184,6 +185,7 @@ export const AccountDashboard: React.FC = () => {
               <img
                 src={user.avatar}
                 alt={user.name}
+                onError={handleAvatarError}
                 className="w-20 h-20 rounded-2xl object-cover border-4 border-slate-50 shadow-md"
               />
               <span className="absolute -bottom-1 -right-1 bg-emerald-500 text-white p-1 rounded-full border-2 border-white" title="Account Active">
@@ -570,6 +572,7 @@ export const AccountDashboard: React.FC = () => {
                         <img
                           src={ord.items[0].product.images[0]}
                           alt="Order preview"
+                          onError={handleProductImageError}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -868,8 +871,9 @@ export const AccountDashboard: React.FC = () => {
                     <div key={i} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
                       <div className="flex items-center gap-3">
                         <img
-                          src={item.product.images[0]}
+                          src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
                           alt={item.product.name}
+                          onError={handleProductImageError}
                           className="w-10 h-10 rounded-lg object-cover border border-slate-200"
                         />
                         <div>
