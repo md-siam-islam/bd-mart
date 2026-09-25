@@ -239,8 +239,8 @@ export const PRODUCTS: Product[] = [
     reviews: 142,
     stock: 45,
     images: [
-      'https://images.unsplash.com/photo-1609592424368-243e86c05a10?w=800&q=80',
-      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80'
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80',
+      'https://images.unsplash.com/photo-1609592424368-243e86c05a10?w=800&q=80'
     ],
     colors: [
       { name: 'Classic Black', hex: '#1E293B' },

@@ -265,7 +265,36 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee-ltr,
   .animate-marquee-rtl,
-  .animate-marquee-ltr-slow {
-    animation-duration: 80s;
+  .animate-marquee-ltr-slow,
+  .animate-marquee-ltr-cards,
+  .animate-marquee-rtl-cards {
+    animation-duration: 90s;
   }
 }
+
+/* ==========================================================================
+   Dual-Row Marquee Card Slider Utilities
+   - Row 1: Left -> Right (marquee-ltr)
+   - Row 2: Right -> Left (marquee-rtl)
+   - Smooth hover pause and state control
+   ========================================================================== */
+
+.animate-marquee-ltr-cards {
+  animation: marquee-ltr 68s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl-cards {
+  animation: marquee-rtl 74s linear infinite;
+  will-change: transform;
+}
+
+/* Pausing marquee when row or card is hovered */
+.marquee-track-hover:hover {
+  animation-play-state: paused !important;
+}
+
+.marquee-is-paused {
+  animation-play-state: paused !important;
+}
+

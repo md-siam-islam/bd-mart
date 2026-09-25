@@ -9,6 +9,7 @@ import { CollectionBanner } from '../components/home/CollectionBanner';
 import { BestSellersShowcase } from '../components/home/BestSellersShowcase';
 import { TrustBenefitsSection } from '../components/home/TrustBenefitsSection';
 import { Testimonials } from '../components/home/Testimonials';
+import { DualMarqueeCardSlider } from '../components/home/DualMarqueeCardSlider';
 import { NewsletterCTA } from '../components/home/NewsletterCTA';
 
 export const Home: React.FC = () => {
@@ -44,7 +45,10 @@ export const Home: React.FC = () => {
       {/* 9. Customer Testimonials: Real Verified Buyer Experiences */}
       <Testimonials />
 
-      {/* 10. Newsletter / CTA: VIP Club Instant ৳500 Voucher */}
+      {/* 10. Dual-Row Marquee Card Slider: Continuous 2-Lane Product Showcase */}
+      <DualMarqueeCardSlider />
+
+      {/* 11. Newsletter / CTA: VIP Club Instant ৳500 Voucher */}
       <NewsletterCTA />
     </div>
   );
